@@ -6,62 +6,70 @@
     <title>get proxy</title>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }
         #hidden-content {
             display: none;
             background-color: #FFFFFF;
-            border-radius: 2px;
+            border-radius: 8px;
             padding: 16px;
-            margin-bottom: 16px;
-            border: 1px solid #b3d4fc;
-
+            margin: 16px 0;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        .proxy-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            transition: background-color 0.3s ease;
+        }
+        .proxy-item:hover {
+            background-color: #f9f9f9;
+        }
+        .proxy-item button {
+            padding: 8px 12px;
+            margin-left: 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .test-speed {
+            background-color: #007bff;
+            color: white;
+        }
+        .copy-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        @media (max-width: 600px) {
+            .proxy-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
     </style>
 </head>
 <body>
-
     <div id="example-container"></div>
     
     <div id="hidden-content">
-        <p>ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTo0OWNkZjhjYS1jNzI4LTRjOTEtYjhiNC0wYmUyNjNlYjBmY2JAcmsyLm15enhkeS50b3A6NDAwNDE#%F0%9F%87%BA%F0%9F%87%B8%20%E7%BE%8E%E5%9B%BD1</p>
-        <p>{
-  "host" : "rk2.myzxdy.top",
-  "file" : "",
-  "obfsParam" : "",
-  "alpn" : "",
-  "cert" : "",
-  "created" : 1729945215.124306,
-  "updated" : 1729945215.1054878,
-  "mtu" : "",
-  "flag" : "US",
-  "ping" : 356,
-  "privateKey" : "",
-  "hpkp" : "",
-  "uuid" : "bd7be869-5a02-f42b-18bb-9a1e6420101c",
-  "type" : "Shadowsocks",
-  "downmbps" : "",
-  "user" : "",
-  "plugin" : "",
-  "method" : "chacha20-ietf-poly1305",
-  "data" : "https:\/\/a.idydz.top\/api\/v1\/client\/subscribe?token=869174213a3bef443fd25d27c8a1c9a9",
-  "udp" : 1,
-  "filter" : "",
-  "protoParam" : "",
-  "reserved" : "",
-  "alterId" : "",
-  "upmbps" : "",
-  "keepalive" : "",
-  "port" : "40041",
-  "obfs" : "none",
-  "dns" : "",
-  "publicKey" : "",
-  "peer" : "",
-  "weight" : 1729945174,
-  "ip" : "",
-  "title" : "🇺🇸 美国1",
-  "proto" : "none",
-  "password" : "49cdf8ca-c728-4c91-b8b4-0be263eb0fcb",
-  "chain" : "",
-  "shortId" : ""
-}</p>
+        <div class="proxy-item">
+            <span>🇺🇸 美国1</span>
+            <button class="test-speed" onclick="testSpeed('美国1')">测试速度</button>
+            <button class="copy-btn" onclick="copyToClipboard('ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTo0OWNkZjhjYS1jNzI4LTRjOTEtYjhiNC0wYmUyNjNlYjBmY2JAcmsyLm15enhkeS50b3A6NDAwNDE#%F0%9F%87%BA%F0%9F%87%B8%20%E7%BE%8E%E5%9B%BD1')">拷贝</button>
+        </div>
+        <!-- 可添加更多代理服务器项 -->
     </div>
 
     <script>
@@ -69,12 +77,24 @@
             turnstile.render("#example-container", {
                 sitekey: "0x4AAAAAAAyg02LEdiXrI52i",
                 callback: function (token) {
-                    console.log(`Challenge Success ${token}`);
                     document.getElementById("hidden-content").style.display = "block";
+                    console.log(`Challenge Success: ${token}`);
                 }
             });
         };
-    </script>
 
+        function testSpeed(serverName) {
+            alert(`${serverName} 的速度正在测试中...`);
+            // 可以在这里调用实际的测速 API 或者实现测速逻辑
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("已复制到剪贴板！");
+            }, () => {
+                alert("复制失败，请手动复制。");
+            });
+        }
+    </script>
 </body>
 </html>

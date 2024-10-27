@@ -4,37 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cloudflare Turnstile 示例</title>
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
     <style>
-        #hidden-content { display: none; margin-top: 20px; padding: 10px; background-color: #e7f3ff; border: 1px solid #b3d4fc; }
+        #hidden-content {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e7f3ff;
+            border: 1px solid #b3d4fc;
+        }
     </style>
 </head>
 <body>
 
     <h2>请进行验证</h2>
-    <div id="example-container" class="cf-turnstile" data-sitekey="SITE_KEY_PLACEHOLDER" data-callback="onSuccess"></div>
-
+    <div id="example-container"></div>
+    
     <div id="hidden-content">
-        <p id="dynamic-content"></p>
+        <p>验证成功！这是验证后显示的隐藏内容。</p>
     </div>
 
     <script>
-        function onSuccess(token) {
-            fetch('/api/verify', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token: token })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById("dynamic-content").textContent = data.hiddenContent;
+        window.onloadTurnstileCallback = function () {
+            turnstile.render("#example-container", {
+                sitekey: "0x4AAAAAAAyg02LEdiXrI52i",
+                callback: function (token) {
+                    console.log(`Challenge Success ${token}`);
                     document.getElementById("hidden-content").style.display = "block";
-                } else {
-                    alert("验证失败，请重试。");
                 }
             });
-        }
+        };
     </script>
 
 </body>

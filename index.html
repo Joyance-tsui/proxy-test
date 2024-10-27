@@ -79,11 +79,13 @@
         };
 
         function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => 
-                , () => {
-                alert("error");
-            });
+            navigator.clipboard.writeText(text).then(() => {
+                alert("复制成功");
+            }).catch(() => {
+                alert("复制失败");
+    });
         }
+
     </script>
 </body>
 </html>

@@ -44,12 +44,8 @@
             border-radius: 4px;
             cursor: pointer;
         }
-        .test-speed {
-            background-color: #007bff;
-            color: white;
-        }
         .copy-btn {
-            background-color: #28a745;
+            background-color: #000000;
             color: white;
         }
         @media (max-width: 600px) {
@@ -66,7 +62,6 @@
     <div id="hidden-content">
         <div class="proxy-item">
             <span>🇺🇸 美国1</span>
-            <button class="test-speed" onclick="testSpeed('美国1')">测试速度</button>
             <button class="copy-btn" onclick="copyToClipboard('ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTo0OWNkZjhjYS1jNzI4LTRjOTEtYjhiNC0wYmUyNjNlYjBmY2JAcmsyLm15enhkeS50b3A6NDAwNDE#%F0%9F%87%BA%F0%9F%87%B8%20%E7%BE%8E%E5%9B%BD1')">拷贝</button>
         </div>
         <!-- 可添加更多代理服务器项 -->
@@ -83,16 +78,10 @@
             });
         };
 
-        function testSpeed(serverName) {
-            alert(`${serverName} 的速度正在测试中...`);
-            // 可以在这里调用实际的测速 API 或者实现测速逻辑
-        }
-
         function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert("已复制到剪贴板！");
-            }, () => {
-                alert("复制失败，请手动复制。");
+            navigator.clipboard.writeText(text).then(() => 
+                , () => {
+                alert("error");
             });
         }
     </script>

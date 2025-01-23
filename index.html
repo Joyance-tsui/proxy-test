@@ -1,157 +1,86 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>get proxy</title>
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
+    <title>订阅链接分享</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            margin: 0;
-            padding: 0;
-        }
-        #hidden-content {
-            display: none;
-            background-color: #FFFFFF;
-            border-radius: 8px;
-            padding: 16px;
-            margin: 16px 0;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 100%;
-        }
-        .proxy-item {
-            display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-            transition: background-color 0.3s ease;
-            opacity: 0;
-            transform: translateY(20px);
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
         }
-        .proxy-item.show {
-            opacity: 1;
-            transform: translateY(0);
-            transition: all 0.5s ease;
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
         }
-        .proxy-item:hover {
-            background-color: #f9f9f9;
+        .link-area {
+            margin-bottom: 20px;
         }
-        .proxy-info {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+        .link-display {
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto; /* 如果链接过长，允许横向滚动 */
+            font-family: monospace; /* 使用等宽字体 */
+            user-select: text; /* 允许用户手动选择复制 */
         }
-        .update-time {
-            font-size: 12px;
-            color: #666;
-        }
-        .copy-btn {
-            padding: 8px 16px;
-            margin-left: 8px;
+        .copy-button {
+            background-color: #007bff;
+            color: white;
             border: none;
+            padding: 10px 20px;
             border-radius: 4px;
             cursor: pointer;
-            background-color: #000000;
-            color: white;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease;
         }
-        .copy-btn:hover {
-            background-color: #ffffff;
-            color: #000000;
-            border: 1px solid #000000;
+        .copy-button:hover {
+            background-color: #0056b3;
         }
-        .copy-btn.success {
-            background-color: #4CAF50;
-            color: white;
-        }
-        @media (max-width: 600px) {
-            .proxy-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .copy-btn {
-                margin-top: 8px;
-                margin-left: 0;
-                width: 100%;
-            }
+        .success-message {
+            color: green;
+            margin-top: 10px;
+            display: none; /* 默认隐藏，复制成功后显示 */
         }
     </style>
 </head>
 <body>
-    <div id="example-container"></div>
-    
-    <div id="hidden-content">
-        <div class="proxy-item">
-            <div class="proxy-info">
-                <span>🇺🇸 美国</span>
-                <span class="update-time">最后更新：2024-10-27 08:00:00</span>
+    <div class="container">
+        <h1>您的订阅链接</h1>
+        <div class="link-area">
+            <div class="link-display" id="subscriptionLinkDisplay">
+                https://info.3f66.net/api/v1/client/subscribe?token=cbc578b957a573381363f5178516a24b
             </div>
-            <button class="copy-btn" onclick="copyToClipboard(this, 'ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTo0OWNkZjhjYS1jNzI4LTRjOTEtYjhiNC0wYmUyNjNlYjBmY2JAcmsyLm15enhkeS50b3A6NDAwNDE#%F0%9F%87%BA%F0%9F%87%B8%20%E7%BE%8E%E5%9B%BD1')">拷贝</button>
         </div>
-        <div class="proxy-item">
-            <div class="proxy-info">
-                <span>🇯🇵 日本-GPT</span>
-                <span class="update-time">最后更新：2024-10-27 08:00:00</span>
-            </div>
-            <button class="copy-btn" onclick="copyToClipboard(this, 'ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTo0OWNkZjhjYS1jNzI4LTRjOTEtYjhiNC0wYmUyNjNlYjBmY2JAcmsyLm15enhkeS50b3A6NDAwMzE#%F0%9F%87%AF%F0%9F%87%B5%20%E6%97%A5%E6%9C%AC1-GPT')">拷贝</button>
-        </div>
-        <div class="proxy-item">
-            <div class="proxy-info">
-                <span>🇹🇼 台湾-GPT</span>
-                <span class="update-time">最后更新：2024-10-27 08:00:00</span>
-            </div>
-            <button class="copy-btn" onclick="copyToClipboard(this, 'ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTo0OWNkZjhjYS1jNzI4LTRjOTEtYjhiNC0wYmUyNjNlYjBmY2JAcmsxLm15enhkeS50b3A6NDAwMjE#%F0%9F%87%B9%F0%9F%87%BC%20%E5%8F%B0%E6%B9%BE1-GPT')">拷贝</button>
-        </div>
-        <div class="proxy-item">
-            <div class="proxy-info">
-                <span>🇸🇬 新加坡</span>
-                <span class="update-time">最后更新：2024-10-27 08:00:00</span>
-            </div>
-            <button class="copy-btn" onclick="copyToClipboard(this, 'ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTo0OWNkZjhjYS1jNzI4LTRjOTEtYjhiNC0wYmUyNjNlYjBmY2JAcmsxLm15enhkeS50b3A6NDAwMTE#%F0%9F%87%B8%F0%9F%87%AC%20%E6%96%B0%E5%8A%A0%E5%9D%A11')">拷贝</button>
+        <button class="copy-button" id="copyButton">复制链接</button>
+        <div class="success-message" id="successMessage">
+            链接已复制到剪贴板！
         </div>
     </div>
 
     <script>
-        window.onloadTurnstileCallback = function () {
-            turnstile.render("#example-container", {
-                sitekey: "0x4AAAAAAAyg02LEdiXrI52i",
-                callback: function (token) {
-                    document.getElementById("hidden-content").style.display = "block";
-                    showProxyItems();
-                    console.log(`Challenge Success: ${token}`);
-                }
-            });
-        };
-
-        function showProxyItems() {
-            const items = document.getElementsByClassName('proxy-item');
-            Array.from(items).forEach((item, index) => {
-                setTimeout(() => {
-                    item.classList.add('show');
-                }, index * 200);
-            });
-        }
-
-        function copyToClipboard(button, text) {
-            navigator.clipboard.writeText(text).then(() => {
-                button.textContent = "已复制";
-                button.classList.add('success');
-                setTimeout(() => {
-                    button.textContent = "拷贝";
-                    button.classList.remove('success');
-                }, 2000);
-            }).catch((err) => {
-                console.error('复制失败:', err);
-            });
-        }
+        document.getElementById('copyButton').addEventListener('click', function() {
+            const linkText = document.getElementById('subscriptionLinkDisplay').innerText;
+            navigator.clipboard.writeText(linkText)
+                .then(() => {
+                    console.log('链接复制成功！');
+                    document.getElementById('successMessage').style.display = 'block'; // 显示成功消息
+                    setTimeout(() => {
+                        document.getElementById('successMessage').style.display = 'none'; // 稍后隐藏成功消息
+                    }, 2000); // 2秒后隐藏
+                })
+                .catch(err => {
+                    console.error('复制链接失败: ', err);
+                    alert('复制链接失败，请手动复制。'); // 复制失败时提示用户手动复制
+                });
+        });
     </script>
 </body>
 </html>
